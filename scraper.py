@@ -100,7 +100,9 @@ def get_offers(pages):
 
 	allOffers = lmOffers + olxOffers + pracujOffers
 
-	for offer in allOffers:
+	sortedOffers = sorted(allOffers, key=lambda offer: offer.date, reverse=True)
+
+	for offer in sortedOffers:
 		print(offer.title)
 		print(" ")
 		print(offer.date)
@@ -119,5 +121,4 @@ get_offers(1)
 
 
 #TODO
-# sort offers by date
 # keywords
