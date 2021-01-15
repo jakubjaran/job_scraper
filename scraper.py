@@ -25,7 +25,7 @@ def get_lm_offers(pages):
 			source = 'LM.pl'
 			aTag = div.find('a', first=True)
 			title = aTag.text
-			link = f"https://www.lm.pl{aTag.attrs['href']}"
+			link = 'https://www.lm.pl{}'.format(aTag.attrs['href'])
 			strongs = div.find('strong')
 
 			date = strongs[0].text
