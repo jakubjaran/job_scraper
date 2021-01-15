@@ -19,7 +19,7 @@ def formatDate(date):
 def get_lm_offers(pages):
 	lmOffers = []
 	for i in range(pages):
-		r = session.get(f'https://www.lm.pl/ogloszenia/lista/87/{i}/36290215')
+		r = session.get('https://www.lm.pl/ogloszenia/lista/87/{}/36290215'.format(i))
 		divs = r.html.find('div.ogloszenie_kontener')
 		for div in divs:
 			source = 'LM.pl'
@@ -43,7 +43,7 @@ def get_lm_offers(pages):
 def get_olx_offers(pages):
 	olxOffers = []
 	for i in range(pages):
-		r = session.get(f'https://www.olx.pl/praca/konin/?page={i}')
+		r = session.get('https://www.olx.pl/praca/konin/?page={}'.format(i))
 		divs = r.html.find('tr.wrap')
 		for div in divs:
 			source = 'OLX.pl'
@@ -66,7 +66,7 @@ def get_olx_offers(pages):
 def get_pracuj_offers(pages):
 	pracujOffers = []
 	for i in range(pages):
-		r = session.get(f'https://www.pracuj.pl/praca/konin;wp?rd=5&pn={i}')
+		r = session.get('https://www.pracuj.pl/praca/konin;wp?rd=5&pn={}'.format(i))
 		r.html.render()
 		divs = r.html.find('li.results__list-container-item')
 		for div in divs:
