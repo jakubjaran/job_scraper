@@ -91,6 +91,24 @@ def get_pracuj_offers(pages):
 	return pracujOffers
 
 
+def print_offer(offer):
+	print(offer.title)
+	print(" ")
+	print(offer.date)
+	print(" ")
+	print(offer.place)
+	print(" ")
+	print(offer.link)
+	print(" ")
+	print(offer.source)
+	print(" ")
+	print(" ")
+	print(" ")
+
+
+keywords = ['Doradca', 'Programista']
+
+
 def get_offers(pages):
 	allOffers = []
 
@@ -103,22 +121,10 @@ def get_offers(pages):
 	sortedOffers = sorted(allOffers, key=lambda offer: offer.date, reverse=True)
 
 	for offer in sortedOffers:
-		print(offer.title)
-		print(" ")
-		print(offer.date)
-		print(" ")
-		print(offer.place)
-		print(" ")
-		print(offer.link)
-		print(" ")
-		print(offer.source)
-		print(" ")
-		print(" ")
-		print(" ")
+		for keyword in keywords:
+			if keyword in offer.title:
+				print_offer(offer)
+	
 
 
 get_offers(1)
-
-
-#TODO
-# keywords
