@@ -1,11 +1,7 @@
 from requests_html import HTMLSession
+import dateparser
 
 session = HTMLSession()
-
-##Links
-# https://www.lm.pl/ogloszenia/lista/87/pageNum/36290215
-# https://www.olx.pl/praca/konin/?page=pageNum
-# https://www.pracuj.pl/praca/konin;wp?rd=5&pn=pageNum
 
 class Offer:
 	def __init__(self, title, link, date, place, source):
@@ -14,6 +10,10 @@ class Offer:
 		self.date = date
 		self.place = place
 		self.source = source
+
+
+def formatDate(date):
+	return dateparser.parse(date, languages=['pl'], settings={'PREFER_DATES_FROM': 'past'})
 
 
 def get_lm_offers(pages):
@@ -27,7 +27,10 @@ def get_lm_offers(pages):
 			title = aTag.text
 			link = f"https://www.lm.pl{aTag.attrs['href']}"
 			strongs = div.find('strong')
+
 			date = strongs[0].text
+			date = formatDate(date)
+
 			place = strongs[2].text
 
 			offer = Offer(title, link, date, place, source)
@@ -47,7 +50,10 @@ def get_olx_offers(pages):
 			title = div.find('strong', first=True).text
 			link = div.find('a', first=True).attrs['href']
 			breadcrumbs = div.find('small.breadcrumb')
+
 			date = breadcrumbs[1].find('span', first=True).text
+			date = formatDate(date)
+
 			place = breadcrumbs[0].find('span', first=True).text
 			
 			offer = Offer(title, link, date, place, source)
@@ -72,7 +78,10 @@ def get_pracuj_offers(pages):
 				link = aTag.attrs['href']
 			except:
 				continue
+
 			date = div.find('span.offer-actions__date', first=True).text.split(':')[1].strip()
+			date = formatDate(date)
+
 			place = div.find('li.offer-labels__item', first=True).text
 			
 			offer = Offer(title, link, date, place, source)
@@ -105,9 +114,10 @@ def get_offers(pages):
 		print(" ")
 		print(" ")
 
+
 get_offers(1)
 
+
 #TODO
-# one date type
 # sort offers by date
 # keywords
