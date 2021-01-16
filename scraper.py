@@ -1,5 +1,6 @@
 from requests_html import HTMLSession
 import dateparser
+import jsons
 
 session = HTMLSession()
 
@@ -19,13 +20,13 @@ def formatDate(date):
 def get_lm_offers(pages):
 	lmOffers = []
 	for i in range(pages):
-		r = session.get('https://www.lm.pl/ogloszenia/lista/87/{}/36290215'.format(i))
+		r = session.get(f'https://www.lm.pl/ogloszenia/lista/87/{i}/36290215')
 		divs = r.html.find('div.ogloszenie_kontener')
 		for div in divs:
 			source = 'LM.pl'
 			aTag = div.find('a', first=True)
 			title = aTag.text
-			link = 'https://www.lm.pl{}'.format(aTag.attrs['href'])
+			link = f"https://www.lm.pl{aTag.attrs['href']}"
 			strongs = div.find('strong')
 
 			date = strongs[0].text
@@ -43,7 +44,7 @@ def get_lm_offers(pages):
 def get_olx_offers(pages):
 	olxOffers = []
 	for i in range(pages):
-		r = session.get('https://www.olx.pl/praca/konin/?page={}'.format(i))
+		r = session.get(f'https://www.olx.pl/praca/konin/?page={i}')
 		divs = r.html.find('tr.wrap')
 		for div in divs:
 			source = 'OLX.pl'
@@ -66,7 +67,7 @@ def get_olx_offers(pages):
 def get_pracuj_offers(pages):
 	pracujOffers = []
 	for i in range(pages):
-		r = session.get('https://www.pracuj.pl/praca/konin;wp?rd=5&pn={}'.format(i))
+		r = session.get(f'https://www.pracuj.pl/praca/konin;wp?rd=5&pn={i}')
 		r.html.render()
 		divs = r.html.find('li.results__list-container-item')
 		for div in divs:
@@ -91,40 +92,18 @@ def get_pracuj_offers(pages):
 	return pracujOffers
 
 
-def print_offer(offer):
-	print(offer.title)
-	print(" ")
-	print(offer.date)
-	print(" ")
-	print(offer.place)
-	print(" ")
-	print(offer.link)
-	print(" ")
-	print(offer.source)
-	print(" ")
-	print(" ")
-	print(" ")
-
-
-keywords = ['Doradca', 'Programista']
-
-
 def get_offers(pages):
-	allOffers = []
+	offers = []
 
 	lmOffers = get_lm_offers(pages)
 	olxOffers = get_olx_offers(pages)
 	pracujOffers = get_pracuj_offers(pages)
 
-	allOffers = lmOffers + olxOffers + pracujOffers
+	offers = lmOffers + olxOffers + pracujOffers
 
-	sortedOffers = sorted(allOffers, key=lambda offer: offer.date, reverse=True)
+	jsonOffers = []
 
-	for offer in sortedOffers:
-		for keyword in keywords:
-			if keyword in offer.title:
-				print_offer(offer)
+	for offer in offers:
+		jsonOffers.append(jsons.dump(offer))
 	
-
-
-get_offers(1)
+	return jsonOffers
