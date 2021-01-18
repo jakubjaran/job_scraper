@@ -101,9 +101,11 @@ def get_offers(pages):
 
 	offers = lmOffers + olxOffers + pracujOffers
 
+	sortedOffers = sorted(offers, key=lambda offer: offer.date, reverse=True)
+
 	jsonOffers = []
 
-	for offer in offers:
+	for offer in sortedOffers:
 		jsonOffers.append(jsons.dump(offer))
 	
 	return jsonOffers

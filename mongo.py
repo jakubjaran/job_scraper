@@ -1,8 +1,8 @@
 import pymongo
-from PASS import password
+from SECRET import url
 
 def updateMongoDB(offers):	
-	client = pymongo.MongoClient(f'mongodb+srv://admin:{password}@cluster0.jtv83.mongodb.net/job_scraper?retryWrites=true&w=majority')
+	client = pymongo.MongoClient(url)
 
 	db = client["job_scraper"]
 
