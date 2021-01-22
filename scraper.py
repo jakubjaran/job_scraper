@@ -35,8 +35,9 @@ def get_lm_offers(pages):
 			place = strongs[2].text
 
 			offer = Offer(title, link, date, place, source)
-
-			lmOffers.append(offer)
+			
+			if offer not in lmOffers:
+				lmOffers.append(offer)
 
 	return lmOffers
 
@@ -58,8 +59,9 @@ def get_olx_offers(pages):
 			place = breadcrumbs[0].find('span', first=True).text
 			
 			offer = Offer(title, link, date, place, source)
-
-			olxOffers.append(offer)
+			
+			if offer not in olxOffers:
+				olxOffers.append(offer)
 
 	return olxOffers
 
@@ -87,7 +89,8 @@ def get_pracuj_offers(pages):
 			
 			offer = Offer(title, link, date, place, source)
 
-			pracujOffers.append(offer)
+			if offer not in pracujOffers:
+				pracujOffers.append(offer)
 
 	return pracujOffers
 

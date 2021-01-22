@@ -1,12 +1,17 @@
 from scraper import *
 from mongo import *
+import time
+
 
 def main():
 	print('Scraping offers...')
-	offers = get_offers(1)
+	offers = get_offers(3)
 	print('Scraping done!')
 	print('Updating MongoDB...')
 	updateMongoDB(offers)
 	print('Update done!')
 
-main()
+
+while True:
+	main()
+	time.sleep(600)
