@@ -35,8 +35,12 @@ def get_lm_offers(pages):
 			place = strongs[2].text
 
 			offer = Offer(title, link, date, place, source)
-			
-			if offer not in lmOffers:
+
+			for lmOffer in lmOffers:
+				if lmOffer.link == offer.link:
+					print('Offer duplication')
+					break
+			else:
 				lmOffers.append(offer)
 
 	return lmOffers
@@ -50,7 +54,7 @@ def get_olx_offers(pages):
 		for div in divs:
 			source = 'OLX.pl'
 			title = div.find('strong', first=True).text
-			link = div.find('a', first=True).attrs['href']
+			link = div.find('a', first=True).attrs['href'].split('#')[0]
 			breadcrumbs = div.find('small.breadcrumb')
 
 			date = breadcrumbs[1].find('span', first=True).text
@@ -59,8 +63,12 @@ def get_olx_offers(pages):
 			place = breadcrumbs[0].find('span', first=True).text
 			
 			offer = Offer(title, link, date, place, source)
-			
-			if offer not in olxOffers:
+
+			for olxOffer in olxOffers:
+				if olxOffer.link == offer.link:
+					print('Offer duplication')
+					break
+			else:
 				olxOffers.append(offer)
 
 	return olxOffers
@@ -89,7 +97,11 @@ def get_pracuj_offers(pages):
 			
 			offer = Offer(title, link, date, place, source)
 
-			if offer not in pracujOffers:
+			for pracujOffer in pracujOffers:
+				if pracujOffer.link == offer.link:
+					print('Offer duplication')
+					break
+			else:
 				pracujOffers.append(offer)
 
 	return pracujOffers
