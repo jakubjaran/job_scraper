@@ -1,6 +1,5 @@
 from scraper import *
 from mongo import *
-import time
 
 
 def main():
@@ -11,7 +10,4 @@ def main():
 	updateMongoDB(offers)
 	print('Update done!')
 
-
-while True:
-	main()
-	time.sleep(600)
+main()
