@@ -1,13 +1,14 @@
 from scraper import *
-from mongo import *
+import json
 
 
 def main():
 	print('Scraping offers...')
-	offers = get_offers(3)
+	offers = get_offers(1)
 	print('Scraping done!')
-	print('Updating MongoDB...')
-	updateMongoDB(offers)
-	print('Update done!')
+	print('Writing to JSON')
+	with open('offers.json', 'w') as outfile:
+		json.dump(offers, outfile, indent=4)
+	print('JSON writing done!')
 
 main()
