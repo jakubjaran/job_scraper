@@ -1,5 +1,6 @@
 from scraper import *
 import json
+import requests
 
 
 def main():
@@ -10,5 +11,4 @@ def main():
 	with open('offers.json', 'w') as outfile:
 		json.dump(offers, outfile, indent=4)
 	print('JSON writing done!')
-
 main()
