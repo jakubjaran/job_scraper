@@ -23,19 +23,19 @@ def formatDate(date):
 def get_lm_offers(pages, url):
     lmOffers = []
     for i in range(pages):
-        r = session.get(f"https://www.lm.pl/ogloszenia/lista/87/{i}/{url}")
-        divs = r.html.find("div.ogloszenie_kontener")
+        r = session.get(f"https://www.lm.pl/ogloszenia/lista/praca-dam/{url}?page={i}")
+        divs = r.html.find("div.classifieds__one")
         for div in divs:
             source = "LM.pl"
             aTag = div.find("a", first=True)
             title = aTag.text
             link = f"https://www.lm.pl{aTag.attrs['href']}"
-            strongs = div.find("strong")
 
-            date = strongs[0].text
+            info = div.find("div.classifieds__one__info", first=True)
+            date = info.find("time", first=True).text
             date = formatDate(date)
 
-            place = strongs[2].text
+            place = div.find("span")[1].text.split()[1]
 
             offer = Offer(title, link, date, place, source)
 
@@ -116,8 +116,8 @@ def get_pracuj_offers(pages, url):
 
 def get_offers(pages):
     offers = []
-    lmOffers = get_lm_offers(pages, "36290215")
-    lmOffers += get_lm_offers(pages, "37762253")
+    lmOffers = get_lm_offers(pages*2, "konin")
+    lmOffers += get_lm_offers(pages*2, "kolo")
     olxOffers = get_olx_offers(
         pages, "https://www.olx.pl/praca/konin/?search%5Bdist%5D=15&page="
     )
@@ -139,3 +139,4 @@ def get_offers(pages):
         jsonOffers.append(jsons.dump(offer))
 
     return jsonOffers
+
